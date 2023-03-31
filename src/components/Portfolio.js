@@ -7,7 +7,12 @@ import {
   deleteDoc,
   onSnapshot,
 } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes,deleteObject } from "firebase/storage";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  deleteObject,
+} from "firebase/storage";
 import { db, storage } from "../services/firebase";
 
 function Portfolio() {
@@ -80,7 +85,7 @@ function Portfolio() {
         const storageRef = ref(storage, imageUrl);
         await deleteObject(storageRef);
       }
-    
+
       // Delete project from Firestore
       await deleteDoc(doc(db, "projects", id));
     } catch (error) {
@@ -88,8 +93,6 @@ function Portfolio() {
       setUploadError(error.message);
     }
   };
-  
-  
 
   const handleVisibility = async (id, visible) => {
     try {
