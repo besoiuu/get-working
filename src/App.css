@@ -1,1 +1,48 @@
+@import '~bootstrap/dist/css/bootstrap.css';
 
+/* Set the font family and text color for the entire app */
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+
+  .App {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+  }
+  
+  /* Style the header */
+  .header {
+    background-color: #007bff;
+    padding: 30px;
+    padding-bottom: 100px;
+  }
+  
+  /* Style the title inside the header */
+  .title {
+    margin: 0;
+    font-size: 3rem;
+    text-align: center;
+    color: white;
+  }
+  
+  /* Style the main section */
+  .main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+  }
+  
+  /* Style the container around the portfolio */
+  .container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    max-width: 1200px;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  

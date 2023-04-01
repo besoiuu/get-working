@@ -14,6 +14,7 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { db, storage } from "../services/firebase";
+import "../styles/Portfolio.css";
 
 function Portfolio() {
   const [projects, setProjects] = useState([]);
@@ -107,80 +108,115 @@ function Portfolio() {
     const file = e.target.files[0];
     setImage(file);
   };
+
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Title:
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Description:
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          ></textarea>
-        </label>
-        <br />
-        <label>
-          URL:
-          <input
-            type="text"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-          />
-        </label>
-        <br />
-        <label>
-          Visible:
-          <input
-            type="checkbox"
-            checked={visible}
-            onChange={(e) => setVisible(e.target.checked)}
-          />
-        </label>
-        <br />
-        <label>
-          Image:
-          <input type="file" onChange={handleFileChange} />
-        </label>
-        <br />
-        <button type="submit">Add Project</button>
-      </form>
-      <hr />
-      {projects.map((project) => (
-        <div key={project.id}>
-          <h2>{project.title}</h2>
-          <p>{project.description}</p>
-          {project.url && (
-            <p>
-              <a href={project.url} target="_blank" rel="noreferrer">
-                {project.url}
-              </a>
-            </p>
-          )}
-          {project.imageUrl && (
-            <img
-              src={project.imageUrl}
-              alt={project.title}
-              style={{ maxWidth: "100%" }}
-            />
-          )}
-          <button onClick={() => handleDelete(project.id, project.imageUrl)}>
-            Delete
-          </button>
-          <button
-            onClick={() => handleVisibility(project.id, !project.visible)}
-          >
-            {project.visible ? "Hide" : "Show"}
-          </button>
+    <div className="container">
+      <div className="row">
+        <div className="col-md-4">
+          <form className="submit-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="title">Title:</label>
+              <input
+                type="text"
+                className="form-control"
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="description">Description:</label>
+              <textarea
+                className="form-control"
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              ></textarea>
+            </div>
+            <div className="form-group">
+              <label htmlFor="url">URL:</label>
+              <input
+                type="text"
+                className="form-control"
+                id="url"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <div className="form-check">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="visible"
+                  checked={visible}
+                  onChange={(e) => setVisible(e.target.checked)}
+                />
+                <label className="form-check-label" htmlFor="visible">
+                  Visible
+                </label>
+              </div>
+            </div>
+            <div className="form-group">
+              <label htmlFor="image">Image:</label>
+              <input
+                type="file"
+                className="form-control-file"
+                id="image"
+                onChange={handleFileChange}
+              />
+            </div>
+            <button type="submit" className="btn btn-primary">
+              Add Project
+            </button>
+          </form>
         </div>
-      ))}
+        <div className="col-md-8">
+          <div className="row card-columns">
+            {projects.map((project) => (
+              <div key={project.id} className="col-md-4">
+                <div className="card">
+                  {project.imageUrl && (
+                    <img
+                      src={project.imageUrl}
+                      className="card-img-top"
+                      alt={project.title}
+                    />
+                  )}
+                  <div className="card-body">
+                    <h5 className="card-title">{project.title}</h5>
+                    <p className="card-text">{project.description}</p>
+                    {project.url && (
+                      <a
+                        href={project.url}
+                        className="btn btn-primary"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Visit Website
+                      </a>
+                    )}
+                    <button
+                      className="btn btn-danger delete-btn"
+                      onClick={() => handleDelete(project.id, project.imageUrl)}
+                    >
+                      Delete
+                    </button>
+                    <button
+                      className="btn btn-warning visibility-btn"
+                      onClick={() =>
+                        handleVisibility(project.id, !project.visible)
+                      }
+                    >
+                      {project.visible ? "Hide" : "Show"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

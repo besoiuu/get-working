@@ -1,0 +1,54 @@
+@import '~bootstrap/dist/css/bootstrap.css';
+
+.submit-form {
+    max-width: 500px;
+    margin: 0 auto;
+    flex: 1;
+    max-width: 400px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+  }
+  
+
+.container {
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  background-color: #f8f9fa;
+}
+
+.card {
+  margin-bottom: 20px;
+  padding: 10px;
+  background: linear-gradient(to bottom right, #fff, #e6e6e6);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  border-bottom: 1px solid #dee2e6;
+  padding: 10px;
+}
+
+.submit-btn {
+  background-color: #007bff;
+  border-radius: 5px;
+  color: white;
+}
+
+.card-body a {
+    margin-left:3px;
+    width:134px;
+}
+
+.delete-btn,
+.visibility-btn {
+  background-color: #dc3545;
+  border-radius: 5px;
+  color: white;
+  margin-top: 3px;
+  margin-left:3px;
+}
+
+.card-columns {
+  column-count: 3;
+}
