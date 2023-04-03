@@ -27,7 +27,6 @@ function Portfolio() {
   const [imageUrl, setImageUrl] = useState("");
   const [uploadError, setUploadError] = useState(null);
   const [editing, setEditing] = useState(false);
-  const [projectToEdit, setProjectToEdit] = useState(null);
   const [projectId, setProjectId] = useState("");
 
   useEffect(() => {
@@ -178,6 +177,7 @@ function Portfolio() {
   return (
     <div className="container">
       <div className="row">
+        {!editing && (
         <div className="col-md-4">
           <form className="submit-form" onSubmit={handleSubmit}>
             <div className="form-group">
@@ -211,6 +211,15 @@ function Portfolio() {
               />
             </div>
             <div className="form-group">
+              <label htmlFor="image">Image:</label>
+              <input
+                type="file"
+                className="form-control"
+                id="image"
+                onChange={handleFileChange}
+              />
+            </div>
+            <div className="form-group">
               <div className="form-check">
                 <input
                   type="checkbox"
@@ -224,20 +233,12 @@ function Portfolio() {
                 </label>
               </div>
             </div>
-            <div className="form-group">
-              <label htmlFor="image">Image:</label>
-              <input
-                type="file"
-                className="form-control-file"
-                id="image"
-                onChange={handleFileChange}
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary submit-btn">
               Add Project
             </button>
           </form>
         </div>
+          )}
         <div className="col-md-8">
           <div className="row card-columns">
             {projects.map((project) => (
@@ -292,9 +293,9 @@ function Portfolio() {
             ))}
           </div>
         </div>
-      </div>
       {editing && (
-        <form className="submit-form" onSubmit={handleEdit}>
+        <div className="col-md-4">
+        <form className="edit-form" onSubmit={handleEdit}>
           <div className="form-group">
             <label htmlFor="title">Title:</label>
             <input
@@ -349,18 +350,20 @@ function Portfolio() {
               </label>
             </div>
           </div>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary update-btn">
             Update Project
           </button>
           <button
             type="button"
-            className="btn btn-secondary"
+            className="btn btn-secondary cancel-btn"
             onClick={() => setEditing(false)}
           >
             Cancel
           </button>
         </form>
+        </div>
       )}
+       </div>
     </div>
   );
 }
