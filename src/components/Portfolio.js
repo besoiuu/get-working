@@ -3,6 +3,7 @@ import {
   collection,
   addDoc,
   doc,
+  getDoc,
   updateDoc,
   deleteDoc,
   onSnapshot,
@@ -25,6 +26,9 @@ function Portfolio() {
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [uploadError, setUploadError] = useState(null);
+  const [editing, setEditing] = useState(false);
+  const [projectToEdit, setProjectToEdit] = useState(null);
+  const [projectId, setProjectId] = useState("");
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "projects"), (snapshot) => {
@@ -109,6 +113,68 @@ function Portfolio() {
     setImage(file);
   };
 
+  const handleEdit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Fetch the current project data from Firestore
+      const projectDoc = await getDoc(doc(db, "projects", projectId));
+      const projectData = projectDoc.data();
+
+      // Update only the fields that have changed
+      const updates = {};
+      if (title !== projectData.title) {
+        updates.title = title;
+      }
+      if (description !== projectData.description) {
+        updates.description = description;
+      }
+      if (url !== projectData.url) {
+        updates.url = url;
+      }
+      if (visible !== projectData.visible) {
+        updates.visible = visible;
+      }
+
+      // Update project in Firestore
+      await updateDoc(doc(db, "projects", projectId), updates);
+
+      // If a new image was uploaded, add it to storage
+      if (image) {
+        const storageRef = ref(storage, `${projectId}/${image.name}`);
+        await uploadBytes(storageRef, image);
+        const newImageUrl = await getDownloadURL(storageRef);
+
+        // Delete old image if it exists
+        if (imageUrl) {
+          const oldImageRef = ref(storage, imageUrl);
+          await deleteObject(oldImageRef);
+        }
+
+        // Update project with new image URL
+        await updateDoc(doc(db, "projects", projectId), {
+          imageUrl: newImageUrl,
+        });
+
+        setImageUrl(newImageUrl);
+      }
+
+      // Reset form state
+      setTitle("");
+      setDescription("");
+      setUrl("");
+      setVisible(true);
+      setImage(null);
+      setUploadError(null);
+
+      // Close the editing modal
+      setEditing(false);
+    } catch (error) {
+      console.error(error);
+      setUploadError(error.message);
+    }
+  };
+
   return (
     <div className="container">
       <div className="row">
@@ -131,6 +197,7 @@ function Portfolio() {
                 id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                rows={10}
               ></textarea>
             </div>
             <div className="form-group">
@@ -210,6 +277,15 @@ function Portfolio() {
                     >
                       {project.visible ? "Hide" : "Show"}
                     </button>
+                    <button
+                      className="btn btn-danger edit-btn"
+                      onClick={() => {
+                        setEditing(true);
+                        setProjectId(project.id);
+                      }}
+                    >
+                      Edit
+                    </button>
                   </div>
                 </div>
               </div>
@@ -217,6 +293,74 @@ function Portfolio() {
           </div>
         </div>
       </div>
+      {editing && (
+        <form className="submit-form" onSubmit={handleEdit}>
+          <div className="form-group">
+            <label htmlFor="title">Title:</label>
+            <input
+              type="text"
+              className="form-control"
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description">Description:</label>
+            <textarea
+              className="form-control"
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={10}
+            ></textarea>
+          </div>
+          <div className="form-group">
+            <label htmlFor="url">URL:</label>
+            <input
+              type="text"
+              className="form-control"
+              id="url"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="image">Image:</label>
+            <input
+              type="file"
+              className="form-control"
+              id="image"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files[0])}
+            />
+          </div>
+          <div className="form-group">
+            <div className="form-check">
+              <input
+                type="checkbox"
+                className="form-check-input"
+                id="visible"
+                checked={visible}
+                onChange={(e) => setVisible(e.target.checked)}
+              />
+              <label className="form-check-label" htmlFor="visible">
+                Visible
+              </label>
+            </div>
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Update Project
+          </button>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => setEditing(false)}
+          >
+            Cancel
+          </button>
+        </form>
+      )}
     </div>
   );
 }
