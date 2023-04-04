@@ -82,39 +82,8 @@ function Portfolio() {
     }
   };
 
-  const handleDelete = async (id, imageUrl) => {
-    try {
-      // Delete image from storage
-      if (imageUrl) {
-        const storageRef = ref(storage, imageUrl);
-        await deleteObject(storageRef);
-      }
-
-      // Delete project from Firestore
-      await deleteDoc(doc(db, "projects", id));
-    } catch (error) {
-      console.error(error);
-      setUploadError(error.message);
-    }
-  };
-
-  const handleVisibility = async (id, visible) => {
-    try {
-      await updateDoc(doc(db, "projects", id), { visible });
-    } catch (error) {
-      console.error(error);
-      setUploadError(error.message);
-    }
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-  };
-
   const handleEdit = async (e) => {
     e.preventDefault();
-
     try {
       // Fetch the current project data from Firestore
       const projectDoc = await getDoc(doc(db, "projects", projectId));
@@ -174,141 +143,171 @@ function Portfolio() {
     }
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+  };
+
+  const handleDelete = async (id, imageUrl) => {
+    try {
+      // Delete image from storage
+      if (imageUrl) {
+        const storageRef = ref(storage, imageUrl);
+        await deleteObject(storageRef);
+      }
+
+      // Delete project from Firestore
+      await deleteDoc(doc(db, "projects", id));
+    } catch (error) {
+      console.error(error);
+      setUploadError(error.message);
+    }
+  };
+
+  const handleVisibility = async (id, visible) => {
+    try {
+      await updateDoc(doc(db, "projects", id), { visible });
+    } catch (error) {
+      console.error(error);
+      setUploadError(error.message);
+    }
+  };
+
   return (
     <div className="container">
       <div className="row">
         {!editing && (
-        <div className="col-md-4">
-          <form className="submit-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="title">Title:</label>
-              <input
-                type="text"
-                className="form-control"
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="description">Description:</label>
-              <textarea
-                className="form-control"
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                rows={10}
-              ></textarea>
-            </div>
-            <div className="form-group">
-              <label htmlFor="url">URL:</label>
-              <input
-                type="text"
-                className="form-control"
-                id="url"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="image">Image:</label>
-              <input
-                type="file"
-                className="form-control"
-                id="image"
-                onChange={handleFileChange}
-              />
-            </div>
-            <div className="form-group">
-              <div className="form-check">
+          <div className="col-md-4">
+            <form className="submit-form" onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="title">Title:</label>
                 <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="visible"
-                  checked={visible}
-                  onChange={(e) => setVisible(e.target.checked)}
+                  type="text"
+                  className="form-control"
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
                 />
-                <label className="form-check-label" htmlFor="visible">
-                  Visible
-                </label>
               </div>
-            </div>
-            <button type="submit" className="btn btn-primary submit-btn">
-              Add Project
-            </button>
-          </form>
-        </div>
-          )}
-          {editing && (
-        <div className="col-md-4">
-        <form className="edit-form" onSubmit={handleEdit}>
-          <div className="form-group">
-            <label htmlFor="title">Title:</label>
-            <input
-              type="text"
-              className="form-control"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
+              <div className="form-group">
+                <label htmlFor="description">Description:</label>
+                <textarea
+                  className="form-control"
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  rows={10}
+                ></textarea>
+              </div>
+              <div className="form-group">
+                <label htmlFor="url">URL:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="url"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="image">Image:</label>
+                <input
+                  type="file"
+                  className="form-control"
+                  id="image"
+                  onChange={handleFileChange}
+                />
+              </div>
+              <div className="form-group">
+                <div className="form-check">
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    id="visible"
+                    checked={visible}
+                    onChange={(e) => setVisible(e.target.checked)}
+                  />
+                  <label className="form-check-label" htmlFor="visible">
+                    Visible
+                  </label>
+                </div>
+              </div>
+              <button type="submit" className="btn btn-primary submit-btn">
+                Add Project
+              </button>
+            </form>
           </div>
-          <div className="form-group">
-            <label htmlFor="description">Description:</label>
-            <textarea
-              className="form-control"
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={10}
-            ></textarea>
+        )}
+        {editing && (
+          <div className="col-md-4">
+            <form className="edit-form" onSubmit={handleEdit}>
+              <div className="form-group">
+                <label htmlFor="title">Title:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="description">Description:</label>
+                <textarea
+                  className="form-control"
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  rows={10}
+                ></textarea>
+              </div>
+              <div className="form-group">
+                <label htmlFor="url">URL:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="url"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="image">Image:</label>
+                <input
+                  type="file"
+                  className="form-control"
+                  id="image"
+                  accept="image/*"
+                  onChange={(e) => setImage(e.target.files[0])}
+                />
+              </div>
+              <div className="form-group">
+                <div className="form-check">
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    id="visible"
+                    checked={visible}
+                    onChange={(e) => setVisible(e.target.checked)}
+                  />
+                  <label className="form-check-label" htmlFor="visible">
+                    Visible
+                  </label>
+                </div>
+              </div>
+              <button type="submit" className="btn btn-primary update-btn">
+                Update Project
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary cancel-btn"
+                onClick={() => setEditing(false)}
+              >
+                Cancel
+              </button>
+            </form>
           </div>
-          <div className="form-group">
-            <label htmlFor="url">URL:</label>
-            <input
-              type="text"
-              className="form-control"
-              id="url"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="image">Image:</label>
-            <input
-              type="file"
-              className="form-control"
-              id="image"
-              accept="image/*"
-              onChange={(e) => setImage(e.target.files[0])}
-            />
-          </div>
-          <div className="form-group">
-            <div className="form-check">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="visible"
-                checked={visible}
-                onChange={(e) => setVisible(e.target.checked)}
-              />
-              <label className="form-check-label" htmlFor="visible">
-                Visible
-              </label>
-            </div>
-          </div>
-          <button type="submit" className="btn btn-primary update-btn">
-            Update Project
-          </button>
-          <button
-            type="button"
-            className="btn btn-secondary cancel-btn"
-            onClick={() => setEditing(false)}
-          >
-            Cancel
-          </button>
-        </form>
-        </div>
-      )}
+        )}
         <div className="col-md-8">
           <div className="row card-columns">
             {projects.map((project) => (
@@ -325,39 +324,41 @@ function Portfolio() {
                     <h5 className="card-title">{project.title}</h5>
                     <p className="card-text">{project.description}</p>
                     <div className="card-controls">
-                    {project.url && (
-                      <a
-                        href={project.url}
-                        className="btn btn-primary visit-btn"
-                        target="_blank"
-                        rel="noreferrer"
+                      {project.url && (
+                        <a
+                          href={project.url}
+                          className="btn btn-primary visit-btn"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Visit Website
+                        </a>
+                      )}
+                      <button
+                        className="btn btn-danger delete-btn"
+                        onClick={() =>
+                          handleDelete(project.id, project.imageUrl)
+                        }
                       >
-                        Visit Website
-                      </a>
-                    )}
-                    <button
-                      className="btn btn-danger delete-btn"
-                      onClick={() => handleDelete(project.id, project.imageUrl)}
-                    >
-                      Delete
-                    </button>
-                    <button
-                      className="btn btn-warning visibility-btn"
-                      onClick={() =>
-                        handleVisibility(project.id, !project.visible)
-                      }
-                    >
-                      {project.visible ? "Hide" : "Show"}
-                    </button>
-                    <button
-                      className="btn btn-danger edit-btn"
-                      onClick={() => {
-                        setEditing(true);
-                        setProjectId(project.id);
-                      }}
-                    >
-                      Edit
-                    </button>
+                        Delete
+                      </button>
+                      <button
+                        className="btn btn-warning visibility-btn"
+                        onClick={() =>
+                          handleVisibility(project.id, !project.visible)
+                        }
+                      >
+                        {project.visible ? "Hide" : "Show"}
+                      </button>
+                      <button
+                        className="btn btn-danger edit-btn"
+                        onClick={() => {
+                          setEditing(true);
+                          setProjectId(project.id);
+                        }}
+                      >
+                        Edit
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -365,7 +366,7 @@ function Portfolio() {
             ))}
           </div>
         </div>
-       </div>
+      </div>
     </div>
   );
 }

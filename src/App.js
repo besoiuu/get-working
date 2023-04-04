@@ -1,15 +1,14 @@
 import React from "react";
 import Portfolio from "./components/Portfolio";
+import Header from "./components/Header";
 import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <header className="header">
-        <h1 className="title">Get Working</h1>
-      </header>
+      <Header />
       <main className="main">
-          <Portfolio />
+        <Portfolio />
       </main>
     </div>
   );
