@@ -239,61 +239,7 @@ function Portfolio() {
           </form>
         </div>
           )}
-        <div className="col-md-8">
-          <div className="row card-columns">
-            {projects.map((project) => (
-              <div key={project.id} className="col-md-4">
-                <div className="card">
-                  {project.imageUrl && (
-                    <img
-                      src={project.imageUrl}
-                      className="card-img-top"
-                      alt={project.title}
-                    />
-                  )}
-                  <div className="card-body">
-                    <h5 className="card-title">{project.title}</h5>
-                    <p className="card-text">{project.description}</p>
-                    {project.url && (
-                      <a
-                        href={project.url}
-                        className="btn btn-primary"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Visit Website
-                      </a>
-                    )}
-                    <button
-                      className="btn btn-danger delete-btn"
-                      onClick={() => handleDelete(project.id, project.imageUrl)}
-                    >
-                      Delete
-                    </button>
-                    <button
-                      className="btn btn-warning visibility-btn"
-                      onClick={() =>
-                        handleVisibility(project.id, !project.visible)
-                      }
-                    >
-                      {project.visible ? "Hide" : "Show"}
-                    </button>
-                    <button
-                      className="btn btn-danger edit-btn"
-                      onClick={() => {
-                        setEditing(true);
-                        setProjectId(project.id);
-                      }}
-                    >
-                      Edit
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      {editing && (
+          {editing && (
         <div className="col-md-4">
         <form className="edit-form" onSubmit={handleEdit}>
           <div className="form-group">
@@ -363,6 +309,62 @@ function Portfolio() {
         </form>
         </div>
       )}
+        <div className="col-md-8">
+          <div className="row card-columns">
+            {projects.map((project) => (
+              <div key={project.id} className="col-md-4">
+                <div className="card">
+                  {project.imageUrl && (
+                    <img
+                      src={project.imageUrl}
+                      className="card-img-top"
+                      alt={project.title}
+                    />
+                  )}
+                  <div className="card-body">
+                    <h5 className="card-title">{project.title}</h5>
+                    <p className="card-text">{project.description}</p>
+                    <div className="card-controls">
+                    {project.url && (
+                      <a
+                        href={project.url}
+                        className="btn btn-primary visit-btn"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Visit Website
+                      </a>
+                    )}
+                    <button
+                      className="btn btn-danger delete-btn"
+                      onClick={() => handleDelete(project.id, project.imageUrl)}
+                    >
+                      Delete
+                    </button>
+                    <button
+                      className="btn btn-warning visibility-btn"
+                      onClick={() =>
+                        handleVisibility(project.id, !project.visible)
+                      }
+                    >
+                      {project.visible ? "Hide" : "Show"}
+                    </button>
+                    <button
+                      className="btn btn-danger edit-btn"
+                      onClick={() => {
+                        setEditing(true);
+                        setProjectId(project.id);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
        </div>
     </div>
   );

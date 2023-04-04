@@ -9,9 +9,7 @@ function App() {
         <h1 className="title">Get Working</h1>
       </header>
       <main className="main">
-        <div className="container">
           <Portfolio />
-        </div>
       </main>
     </div>
   );

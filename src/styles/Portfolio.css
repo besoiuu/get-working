@@ -1,6 +1,7 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 
-.submit-form {
+.submit-form,
+.edit-form {
   max-width: 500px;
   margin: 0 auto;
   flex: 1;
@@ -34,17 +35,15 @@
   color: white;
 }
 
-.card-body a {
-  margin-left: 3px;
-  width: 134px;
-}
+
 
 .delete-btn,
 .visibility-btn,
 .edit-btn,
 .cancel-btn,
 .update-btn,
-.submit-btn {
+.submit-btn,
+.card-controls a {
   border-radius: 5px;
   color: white;
   margin-top: 3px;
@@ -65,4 +64,57 @@
 
 .card-columns {
   column-count: 3;
+}
+
+@media (max-width: 820px) {
+  /* Adjust styles for devices with a maximum width of 768px */
+  .submit-form,
+  .edit-form {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 5%;
+  }
+
+  .card-columns {
+    column-count: 2;
+  }
+
+  .col-md-4 {
+    width: 100%;
+  }
+
+  .col-md-8 {
+    width: 100%;
+  }
+
+  .edit-form {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .card-controls {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Adjust styles for devices with a maximum width of 576px */
+  .submit-form {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .card-columns {
+    column-count: 1;
+  }
+
+  .col-md-4 {
+    width: 100%;
+  }
+
+  .edit-form {
+    max-width: 100%;
+    margin: 0 auto;
+  }
 }
