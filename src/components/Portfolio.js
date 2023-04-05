@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "../styles/Portfolio.css";
 import {
   collection,
   addDoc,
@@ -14,8 +15,8 @@ import {
   uploadBytes,
   deleteObject,
 } from "firebase/storage";
-import { db, storage } from "../services/firebase";
-import "../styles/Portfolio.css";
+import { db, storage, auth } from "../services/firebase";
+import { useNavigate } from "react-router";
 
 function Portfolio() {
   const [projects, setProjects] = useState([]);
@@ -28,6 +29,7 @@ function Portfolio() {
   const [uploadError, setUploadError] = useState(null);
   const [editing, setEditing] = useState(false);
   const [projectId, setProjectId] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "projects"), (snapshot) => {
@@ -36,6 +38,15 @@ function Portfolio() {
         ...doc.data(),
       }));
       setProjects(projects);
+    });
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (!user) {
+        navigate("/");
+      }
     });
     return unsubscribe;
   }, []);
