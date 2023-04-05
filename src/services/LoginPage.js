@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { signup, login, logout, useAuth } from "./firebase";
 import { useNavigate } from "react-router";
-import '../styles/LoginPage.css'
+import "../styles/LoginPage.css";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
@@ -26,6 +26,8 @@ export default function LoginPage() {
     try {
       await login(emailRef.current.value, passwordRef.current.value);
       setIsLoggedIn(true);
+      emailRef.current.value = "";
+      passwordRef.current.value = "";
     } catch {
       alert("Error!");
     }
@@ -48,29 +50,32 @@ export default function LoginPage() {
   }
 
   function handleTakeAPeek() {
-    navigate("/projectlist");
+    navigate("/guest");
   }
 
   return (
     <div id="main" className="loginContainer">
-      <div className="loggedInfo m-3">
-        Currently logged in as: {currentUser?.email}{" "}
-      </div>
-
-      <div id="fields" className="mb-3">
-        <input
-          ref={emailRef}
-          className="form-control mb-2"
-          placeholder="Email"
-        />
-        <input
-          ref={passwordRef}
-          className="form-control mb-2"
-          type="password"
-          placeholder="Password"
-        />
-      </div>
-
+      {isLoggedIn && (
+        <div className="loggedInfo m-3">
+          Currently logged in as: {currentUser?.email}{" "}
+        </div>
+      )}
+      {!isLoggedIn && (
+        <div id="fields" className="mb-3">
+          <div className="unloggedInfo m-3">Login to your portfolio</div>
+          <input
+            ref={emailRef}
+            className="form-control mb-2"
+            placeholder="Email"
+          />
+          <input
+            ref={passwordRef}
+            className="form-control mb-2"
+            type="password"
+            placeholder="Password"
+          />
+        </div>
+      )}
       {!isLoggedIn && (
         <div className="mb-3">
           <button
@@ -94,10 +99,11 @@ export default function LoginPage() {
           >
             Log Out
           </button>
-          <button className="btn btn-secondary">Take a peek</button>
+          <button className="btn btn-secondary" onClick={handleTakeAPeek}>
+            Take a peek
+          </button>
         </div>
       )}
-
       {isLoggedIn && (
         <div className="mb-3">
           <button
