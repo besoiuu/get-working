@@ -1,0 +1,13 @@
+.projectsContainer {
+    display: flex;
+    margin: 0 auto;
+    margin-top: 2%;
+    flex-direction: column;
+    background-color: #f8f9fa;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    align-items: center;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgb(0 0 0 / 30%);
+}

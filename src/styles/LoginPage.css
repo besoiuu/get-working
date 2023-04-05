@@ -7,9 +7,42 @@
   flex-direction: column;
   background-color: #f8f9fa;
   flex-wrap: wrap;
-  max-width: 1200px;
+  max-width: 400px;
   align-items: center;
   width: 100%;
   border-radius: 10px;
   box-shadow: 0 0 10px rgb(0 0 0 / 30%);
+  padding: 10px;
+}
+
+.unloggedInfo {
+  font-size: 1.5rem;
+}
+
+@media screen and (max-width: 767px) {
+  .loginContainer {
+    max-width: 100%;
+    padding: 10px;
+    margin-top: 4%;
+  }
+
+  .unloggedInfo,
+  .loggedInfo {
+    font-size: 24px;
+  }
+
+  input.form-control {
+    font-size: 16px;
+  }
+
+  button.btn {
+    font-size: 16px;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  button.btn-secondary {
+    background-color: #6c757d;
+  }
 }
