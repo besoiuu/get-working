@@ -25,6 +25,7 @@ function Portfolio() {
   const [url, setUrl] = useState("");
   const [visible, setVisible] = useState(true);
   const [image, setImage] = useState(null);
+  const [nickname, setNickname] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [uploadError, setUploadError] = useState(null);
   const [editing, setEditing] = useState(false);
@@ -33,10 +34,12 @@ function Portfolio() {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "projects"), (snapshot) => {
-      const projects = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const projects = snapshot.docs
+        .filter((doc) => doc.data().owner === auth.currentUser.uid) // only show projects that belong to the current user
+        .map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
       setProjects(projects);
     });
     return unsubscribe;
@@ -55,12 +58,16 @@ function Portfolio() {
     e.preventDefault();
 
     try {
+      const user = auth.currentUser;
+
       // Add project to Firestore
       const projectRef = await addDoc(collection(db, "projects"), {
         title,
         description,
         url,
         visible,
+        nickname,
+        owner: user.uid,
       });
       const projectId = projectRef.id;
 
@@ -77,12 +84,14 @@ function Portfolio() {
         description,
         url,
         visible,
+        nickname,
         imageUrl,
       });
 
       setTitle("");
       setDescription("");
       setUrl("");
+      setNickname("");
       setVisible(true);
       setImage(null);
       setImageUrl("");
@@ -110,6 +119,9 @@ function Portfolio() {
       }
       if (url !== projectData.url) {
         updates.url = url;
+      }
+      if (nickname !== projectData.nickname) {
+        updates.nickname = nickname;
       }
       if (visible !== projectData.visible) {
         updates.visible = visible;
@@ -142,10 +154,10 @@ function Portfolio() {
       setTitle("");
       setDescription("");
       setUrl("");
+      setNickname("");
       setVisible(true);
       setImage(null);
       setUploadError(null);
-
       // Close the editing modal
       setEditing(false);
     } catch (error) {
@@ -221,6 +233,16 @@ function Portfolio() {
                 />
               </div>
               <div className="form-group">
+                <label htmlFor="title">Nickname:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="nickname"
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value)}
+                />
+              </div>
+              <div className="form-group">
                 <label htmlFor="image">Image:</label>
                 <input
                   type="file"
@@ -283,6 +305,16 @@ function Portfolio() {
                 />
               </div>
               <div className="form-group">
+                <label htmlFor="title">Nickname:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="nickname"
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value)}
+                />
+              </div>
+              <div className="form-group">
                 <label htmlFor="image">Image:</label>
                 <input
                   type="file"
@@ -334,6 +366,7 @@ function Portfolio() {
                   <div className="card-body">
                     <h5 className="card-title">{project.title}</h5>
                     <p className="card-text">{project.description}</p>
+                    <p className="card-nickname">{project.nickname}</p>
                     <div className="card-controls">
                       {project.url && (
                         <a
