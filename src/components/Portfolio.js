@@ -99,7 +99,6 @@ function Portfolio() {
     } catch (error) {
       console.error(error);
       setUploadError(error.message);
-      console.log("user verify:", user)
     }
   };
 
