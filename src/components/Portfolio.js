@@ -414,4 +414,6 @@ function Portfolio() {
     </div>
   );
 }
+console.log("user:", auth.currentUser);
+
 export default Portfolio;
