@@ -99,6 +99,7 @@ function Portfolio() {
     } catch (error) {
       console.error(error);
       setUploadError(error.message);
+      console.log("user verify:", user)
     }
   };
 
@@ -195,6 +196,7 @@ function Portfolio() {
       setUploadError(error.message);
     }
   };
+  
 
   return (
     <div className="container">
@@ -414,6 +416,6 @@ function Portfolio() {
     </div>
   );
 }
-console.log("user:", auth.currentUser);
+
 
 export default Portfolio;
