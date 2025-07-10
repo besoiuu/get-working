@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { signup, login, logout, useAuth } from "./firebase";
 import { useNavigate } from "react-router";
 import "../styles/LoginPage.css";
@@ -45,7 +45,20 @@ export default function LoginPage() {
     setLoading(false);
   }
 
+  useEffect(() => {
+  if (currentUser) {
+    setIsLoggedIn(true);
+  } else {
+    setIsLoggedIn(false);
+  }
+}, [currentUser]);
+
+
   function handleGoToPortfolio() {
+    if (!currentUser) {
+    alert("Trebuie să fii autentificat pentru a accesa portofoliul.");
+    return;
+  }
     navigate("/portfolio");
   }
 
