@@ -27,7 +27,7 @@ function Portfolio() {
   const [image, setImage] = useState(null);
   const [nickname, setNickname] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [uploadError, setUploadError] = useState(null);
+  const [, setUploadError] = useState(null);
   const [editing, setEditing] = useState(false);
   const [projectId, setProjectId] = useState("");
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ function Portfolio() {
       }
     });
     return unsubscribe;
-  }, []);
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

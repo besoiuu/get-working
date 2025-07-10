@@ -51,3 +51,4 @@ export function useAuth() {
 }
 
 export { app, auth, storage, db, getFirestore };
+console.log("API KEY:", process.env.REACT_APP_FIREBASE_API_KEY);
